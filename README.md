@@ -1,6 +1,9 @@
 # ty-case
 
 ```
+ make manifests
+ cp config/crd/bases/apps.test.com_testapps.yaml config/dist/apps.test.com_testapps.yaml
+ cp config/samples/apps_v1_testapp.yaml config/dist/apps_v1_testapp.yaml
  make docker-build IMG=anilkuscu95/test-operator
  make docker-push IMG=anilkuscu95/test-operator
  cd config/dist
