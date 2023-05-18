@@ -1,48 +1,22 @@
 package controllers
 
 import (
-	"log"
-	"time"
 	"fmt"
-	"strings"
-	"strconv"
 	corev1 "k8s.io/api/core/v1"
+	"strconv"
+	"strings"
 )
 
-
-func DiskPercentageLimit(r *TestAppReconciler, DiskPercentageLimit int, stopCh <-chan struct{}) {
-	for {
-		select {
-		case <-stopCh:
-			return
-		default:
-			nodes, err := ListNodes(r)
-			if err != nil {
-				log.Printf("Error on listing nodes: %v", err)
-			} else {
-				for _, node := range nodes {
-					allocatable := node.Status.Allocatable
-					ephemeralStorage, _ := allocatable[corev1.ResourceEphemeralStorage]
-					total_capacity_bytes , _ := ConvertToBytes(ephemeralStorage.String())				
-					total_image_size_bytes := TotalNodeImageSize(r,node)
-					current_usage_pecentage := 100*total_image_size_bytes/total_capacity_bytes
-					fmt.Println(current_usage_pecentage)
-					fmt.Println(DiskPercentageLimit)
-					if current_usage_pecentage > int64(DiskPercentageLimit) {
-						err = CordonNode(r, node.Name)
-						if err != nil {
-							log.Printf("Cannot cordon node '%s': %v", node.Name, err)
-						}
-					} else {
-						err = UncordonNode(r, node.Name)
-						if err != nil {
-							log.Printf("Cannot uncordon node '%s': %v", node.Name, err)
-						}
-					}
-				}
-			}
-			time.Sleep(1 * time.Second)
-		}
+func DiskPercentageLimit(r *TestAppReconciler, DiskPercentageLimit int, node corev1.Node) bool {
+	allocatable := node.Status.Allocatable
+	ephemeralStorage, _ := allocatable[corev1.ResourceEphemeralStorage]
+	total_capacity_bytes, _ := ConvertToBytes(ephemeralStorage.String())
+	total_image_size_bytes := TotalNodeImageSize(r, node)
+	current_usage_pecentage := 100 * total_image_size_bytes / total_capacity_bytes
+	if current_usage_pecentage > int64(DiskPercentageLimit) {
+		return true
+	} else {
+		return false
 	}
 }
 

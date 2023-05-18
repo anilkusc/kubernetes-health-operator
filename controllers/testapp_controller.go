@@ -51,16 +51,10 @@ var stopCh chan struct{}
 
 func (r *TestAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 
-	//_ = r.Log.WithValues("testapp", req.NamespacedName)
-	//log := logf.Log.WithName("testapp-controller")
 	log.Print("Starting TestAppReconciler.")
 	testApp := &appsv1.TestApp{}
 	err := r.Client.Get(ctx, req.NamespacedName, testApp)
 	if err != nil {
-		//if errors.IsNotFound(err) {
-		//	log.Info("TestApp resource not found")
-		//	return ctrl.Result{}, nil
-		//}
 		log.Fatal(err, "Failed to get TestApp")
 		return ctrl.Result{}, err
 	}
@@ -70,13 +64,10 @@ func (r *TestAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 
 	stopCh = make(chan struct{})
 
-	//go PodLimit(r, testApp.Spec.PerNodeLimit, stopCh)
-	//go IPLimit(r, testApp.Spec.PerNodeIpLimitPercentage, stopCh)
-	go DiskPercentageLimit(r, testApp.Spec.DiskLimitPercentage, stopCh)
+	go LimitController(r, testApp, stopCh)
 	return ctrl.Result{}, nil
 }
 
-// SetupWithManager sets up the controller with the Manager.
 func (r *TestAppReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&appsv1.TestApp{}).

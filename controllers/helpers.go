@@ -2,12 +2,12 @@ package controllers
 
 import (
 	"context"
-	"log"
-	"strings"
 	"fmt"
-	"math"
 	corev1 "k8s.io/api/core/v1"
+	"log"
+	"math"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"strings"
 )
 
 func ListNodes(r *TestAppReconciler) ([]corev1.Node, error) {
@@ -108,7 +108,7 @@ func parseInt(s string) int {
 
 func TotalNodeImageSize(r *TestAppReconciler, node corev1.Node) int64 {
 	total := int64(0)
-	for _, image := range node.Status.Images{
+	for _, image := range node.Status.Images {
 		total = total + image.SizeBytes
 	}
 	return total
