@@ -35,6 +35,8 @@ spec:
           spec:
             description: TestAppSpec defines the desired state of TestApp
             properties:
+              per_node_disk_limit_percentage:
+                type: integer
               per_node_ip_limit_percentage:
                 type: integer
               per_node_pod_limit:

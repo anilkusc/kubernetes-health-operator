@@ -23,7 +23,6 @@ func IPLimit(r *TestAppReconciler, IpLimit int, stopCh <-chan struct{}) {
 						log.Printf("Error listing pods on node '%s': %v", node.Name, err)
 					}
 					current_usage_pecentage := 100*len(pods)/CalculateMaxIPs(node.Spec.PodCIDR) 
-					log.Println(current_usage_pecentage)
 					if  current_usage_pecentage > IpLimit {
 						err = CordonNode(r, node.Name)
 						if err != nil {

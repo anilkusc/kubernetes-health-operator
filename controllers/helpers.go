@@ -105,3 +105,11 @@ func parseInt(s string) int {
 	fmt.Sscanf(s, "%d", &result)
 	return result
 }
+
+func TotalNodeImageSize(r *TestAppReconciler, node corev1.Node) int64 {
+	total := int64(0)
+	for _, image := range node.Status.Images{
+		total = total + image.SizeBytes
+	}
+	return total
+}

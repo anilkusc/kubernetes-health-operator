@@ -11,3 +11,4 @@ metadata:
 spec:
   per_node_pod_limit: 65
   per_node_ip_limit_percentage: 65
+  per_node_disk_limit_percentage: 65
