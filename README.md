@@ -1,8 +1,11 @@
 # ty-case
-// TODO(user): Add simple overview of use/purpose
 
-## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+```
+ make docker-build IMG=anilkuscu95/test-operator
+ make docker-push IMG=anilkuscu95/test-operator
+ cd config/dist
+ kubectl apply -f .
+```
 
 ## Getting Started
 You’ll need a Kubernetes cluster to run against. You can use [KIND](https://sigs.k8s.io/kind) to get a local cluster for testing, or run against a remote cluster.
