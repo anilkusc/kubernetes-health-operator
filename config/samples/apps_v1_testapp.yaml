@@ -9,4 +9,5 @@ metadata:
     app.kubernetes.io/created-by: ty-case
   name: testapp-sample
 spec:
-  per_node_limit: 65
+  per_node_pod_limit: 65
+  per_node_ip_limit_percentage: 65

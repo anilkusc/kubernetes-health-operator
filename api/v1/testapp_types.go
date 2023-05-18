@@ -29,7 +29,8 @@ type TestAppSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of TestApp. Edit testapp_types.go to remove/update
-	PerNodeLimit int `json:"per_node_limit,omitempty"`
+	PerNodePodLimit int `json:"per_node_pod_limit,omitempty"`
+	PerNodeIpLimitPercentage int `json:"per_node_ip_limit_percentage,omitempty"`
 }
 
 // TestAppStatus defines the observed state of TestApp

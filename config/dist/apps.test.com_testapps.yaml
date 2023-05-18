@@ -35,7 +35,9 @@ spec:
           spec:
             description: TestAppSpec defines the desired state of TestApp
             properties:
-              per_node_limit:
+              per_node_ip_limit_percentage:
+                type: integer
+              per_node_pod_limit:
                 description: Foo is an example field of TestApp. Edit testapp_types.go
                   to remove/update
                 type: integer

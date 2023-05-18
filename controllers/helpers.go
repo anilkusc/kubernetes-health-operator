@@ -3,44 +3,12 @@ package controllers
 import (
 	"context"
 	"log"
-	"time"
-
+	"strings"
+	"fmt"
+	"math"
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-func PerNodeLimit(r *TestAppReconciler, PerNodeLimit int, stopCh <-chan struct{}) {
-	for {
-		select {
-		case <-stopCh:
-			return
-		default:
-			nodes, err := ListNodes(r)
-			if err != nil {
-				log.Printf("Error on listing nodes: %v", err)
-			} else {
-				for _, node := range nodes {
-					pods, err := ListPodsOnNode(r, node.Name)
-					if err != nil {
-						log.Printf("Error listing pods on node '%s': %v", node.Name, err)
-					}
-					if len(pods) > PerNodeLimit {
-						err = CordonNode(r, node.Name)
-						if err != nil {
-							log.Printf("Cannot cordon node '%s': %v", node.Name, err)
-						}
-					} else {
-						err = UncordonNode(r, node.Name)
-						if err != nil {
-							log.Printf("Cannot uncordon node '%s': %v", node.Name, err)
-						}
-					}
-				}
-			}
-			time.Sleep(1 * time.Second)
-		}
-	}
-}
 
 func ListNodes(r *TestAppReconciler) ([]corev1.Node, error) {
 	nodeList := &corev1.NodeList{}
@@ -112,4 +80,28 @@ func UncordonNode(r *TestAppReconciler, nodeName string) error {
 
 	log.Printf("Node '%s' uncordoned successfully", nodeName)
 	return nil
+}
+
+func CalculateMaxIPs(cidr string) int {
+	parts := strings.Split(cidr, "/")
+	ip := parts[0]
+	cidrBits := parts[1]
+
+	ipParts := strings.Split(ip, ".")
+	var ipBytes [4]int
+	for i, part := range ipParts {
+		ipBytes[i] = parseInt(part)
+	}
+
+	maskBits := parseInt(cidrBits)
+
+	maxIPs := int(math.Pow(2, float64(32-maskBits)))
+
+	return maxIPs
+}
+
+func parseInt(s string) int {
+	var result int
+	fmt.Sscanf(s, "%d", &result)
+	return result
 }

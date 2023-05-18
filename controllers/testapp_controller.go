@@ -70,7 +70,8 @@ func (r *TestAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 
 	stopCh = make(chan struct{})
 
-	go PerNodeLimit(r, testApp.Spec.PerNodeLimit, stopCh)
+	//go PodLimit(r, testApp.Spec.PerNodeLimit, stopCh)
+	go IPLimit(r, testApp.Spec.PerNodeIpLimitPercentage, stopCh)
 
 	return ctrl.Result{}, nil
 }
