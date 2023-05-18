@@ -1,0 +1,12 @@
+apiVersion: apps.test.com/v1
+kind: TestApp
+metadata:
+  labels:
+    app.kubernetes.io/name: testapp
+    app.kubernetes.io/instance: testapp-sample
+    app.kubernetes.io/part-of: ty-case
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: ty-case
+  name: testapp-sample
+spec:
+  per_node_limit: 65

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-operator-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-operator-controller
+  template:
+    metadata:
+      labels:
+        app: test-operator-controller
+    spec:
+      containers:
+        - name: test-operator-controller
+          image: anilkuscu95/test-operator
+          imagePullPolicy: Always
+      serviceAccountName: controller-manager

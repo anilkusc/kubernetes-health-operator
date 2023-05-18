@@ -1,0 +1,27 @@
+# permissions for end users to view testapps.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: testapp-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: ty-case
+    app.kubernetes.io/part-of: ty-case
+    app.kubernetes.io/managed-by: kustomize
+  name: testapp-viewer-role
+rules:
+- apiGroups:
+  - apps.test.com
+  resources:
+  - testapps
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps.test.com
+  resources:
+  - testapps/status
+  verbs:
+  - get
