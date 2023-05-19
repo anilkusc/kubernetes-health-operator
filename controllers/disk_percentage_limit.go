@@ -22,6 +22,7 @@ func DiskPercentageLimit(r *TestAppReconciler, DiskPercentageLimit int, node cor
 
 func ConvertToBytes(value string) (int64, error) {
 	unitMap := map[string]int64{
+		"": 1,
 		"Ki": 1024,
 		"Mi": 1024 * 1024,
 		"Gi": 1024 * 1024 * 1024,
@@ -35,12 +36,12 @@ func ConvertToBytes(value string) (int64, error) {
 
 	number, err := strconv.ParseInt(numberStr, 10, 64)
 	if err != nil {
-		return 0, err
+		return 1, err
 	}
 
 	if multiplier, ok := unitMap[unit]; ok {
 		return number * multiplier, nil
 	}
 
-	return 0, fmt.Errorf("Invalid unit: %s", unit)
+	return 1, fmt.Errorf("Invalid unit: %s", unit)
 }
